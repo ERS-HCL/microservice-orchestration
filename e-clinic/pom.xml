@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>clinic.management</groupId>
+	<artifactId>clinic-management-zeebe</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<modules>
+		<module>clinic-management-service-condition</module>
+		<module>clinic-management-service-diagnosticreport</module>
+		<module>clinic-management-service-encounter</module>
+		<module>clinic-management-service-immunization</module>
+		<module>clinic-management-service-medication</module>
+		<module>clinic-management-service-medicationrequest</module>
+		<module>clinic-management-service-observation</module>
+		<module>clinic-management-service-organization</module>
+		<module>clinic-management-service-patient</module>
+		<module>clinic-management-service-procedure</module>
+	</modules>
+
+	<build>
+		<defaultGoal>clean install</defaultGoal>		
+	</build>
+
+</project>
