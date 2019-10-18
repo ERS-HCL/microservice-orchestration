@@ -16,7 +16,7 @@ import io.zeebe.client.api.subscription.JobWorker;
 
 
 @Component
-public class PatientAdapter implements JobHandler {
+public class PatientAdapter {/* // implements JobHandler {
   
   @Autowired
   private ZeebeClient zeebe;
@@ -42,4 +42,4 @@ public class PatientAdapter implements JobHandler {
   public void closeSubscription() {
     subscription.close();      
   }
-}
+*/}

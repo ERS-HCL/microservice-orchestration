@@ -1,0 +1,36 @@
+#zeebe.topic=default-topic
+#zeebe.lockOwner=order
+
+server:
+   port : 8091
+
+#spring.data.mongodb.host=localhost
+#spring.data.mongodb.port=27017
+#spring.data.mongodb.username=
+#spring.data.mongodb.password=
+
+spring:
+   data:
+      mongodb.host: localhost
+      mongodb.port: 27017
+hapi:
+  fhir:
+    version: r4
+    server:
+      path: /fhir/*
+    rest:
+      server-name: hapi-fhir-spring-boot-sample-server-jersey
+      server-version: 1.0.0
+      implementation-description: Spring Boot Jersey Server Sample
+      default-response-encoding: json
+      e-tag-support: enabled
+      default-pretty-print: true
+    validation:
+      enabled: true
+      request-only: true
+management:
+  security:
+    enabled: false
+logging:
+  level:
+    ca.uhn.fhir.jaxrs: debug
