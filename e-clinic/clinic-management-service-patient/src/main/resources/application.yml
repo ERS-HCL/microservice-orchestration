@@ -1,6 +1,3 @@
-#zeebe.topic=default-topic
-#zeebe.lockOwner=order
-
 server:
    port : 8091
 
@@ -13,15 +10,16 @@ spring:
    data:
       mongodb.host: localhost
       mongodb.port: 27017
+      mongodb.uri: mongodb://localhost:27017/test-fhir
 hapi:
   fhir:
     version: r4
     server:
       path: /fhir/*
     rest:
-      server-name: hapi-fhir-spring-boot-sample-server-jersey
+      server-name: hapi-fhir-spring-boot
       server-version: 1.0.0
-      implementation-description: Spring Boot Jersey Server Sample
+      implementation-description: Spring Boot Server Sample
       default-response-encoding: json
       e-tag-support: enabled
       default-pretty-print: true

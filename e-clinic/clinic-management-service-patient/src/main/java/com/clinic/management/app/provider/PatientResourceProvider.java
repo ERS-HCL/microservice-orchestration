@@ -1,46 +1,40 @@
 package com.clinic.management.app.provider;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
+
+import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.Patient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.clinic.management.repo.PatientRepository;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.jaxrs.server.AbstractJaxRsResourceProvider;
+import ca.uhn.fhir.model.primitive.IdDt;
 import ca.uhn.fhir.rest.annotation.Create;
+import ca.uhn.fhir.rest.annotation.Delete;
 import ca.uhn.fhir.rest.annotation.IdParam;
 import ca.uhn.fhir.rest.annotation.Read;
 import ca.uhn.fhir.rest.annotation.ResourceParam;
+import ca.uhn.fhir.rest.annotation.Search;
 import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
-
-import org.hl7.fhir.r4.model.HumanName;
-import org.hl7.fhir.r4.model.IdType;
-import org.hl7.fhir.r4.model.Patient;
-
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class PatientResourceProvider extends AbstractJaxRsResourceProvider<Patient> {
 
-    private static Long counter = 1L;
-
-    private static final ConcurrentHashMap<String, Patient> patients = new ConcurrentHashMap<>();
-
-    static {
-        patients.put(String.valueOf(counter), createPatient("Van Houte"));
-        patients.put(String.valueOf(counter), createPatient("Agnew"));
-        for (int i = 0; i < 20; i++) {
-            patients.put(String.valueOf(counter), createPatient("Random Patient " + counter));
-        }
-    }
-
+    @Autowired
+	private PatientRepository patientRepository;
+  
     public PatientResourceProvider(FhirContext fhirContext) {
         super(fhirContext);
     }
 
     @Read
     public Patient find(@IdParam final IdType theId) {
-        if (patients.containsKey(theId.getIdPart())) {
-            return patients.get(theId.getIdPart());
+    	if (!theId.getIdPart().isEmpty()) {
+        	return patientRepository.findbyUUID(theId.getIdPart());
         } else {
             throw new ResourceNotFoundException(theId);
         }
@@ -49,9 +43,9 @@ public class PatientResourceProvider extends AbstractJaxRsResourceProvider<Patie
     @Create
     public MethodOutcome createPatient(@ResourceParam Patient patient) {
 
-        patient.setId(createId(counter, 1L));
-        patients.put(String.valueOf(counter), patient);
-
+        patient.setId(IdDt.newRandomUuid().toString());
+        patient.setIdBase(IdDt.newRandomUuid().toString());
+        patientRepository.save(patient);
         return new MethodOutcome(patient.getIdElement());
     }
 
@@ -59,17 +53,23 @@ public class PatientResourceProvider extends AbstractJaxRsResourceProvider<Patie
     public Class<Patient> getResourceType() {
         return Patient.class;
     }
-
-    private static IdType createId(final Long id, final Long theVersionId) {
-        return new IdType("Patient", "" + id, "" + theVersionId);
+    
+    @Delete
+    public MethodOutcome delete(@IdParam final IdType theId) {
+        final Patient deletedPatient = find(theId);
+        if(deletedPatient !=null)
+        {
+        	patientRepository.deletebyUUID(theId.getIdPart().toString());
+        }
+        
+        final MethodOutcome result = new MethodOutcome().setCreated(true);
+        result.setResource(deletedPatient);
+        return result;
+    }
+    @Search
+    public List<Patient> search(@ResourceParam final Patient patient) {
+        return (List<Patient>) patientRepository.findAll();
     }
 
-    private static Patient createPatient(final String name) {
-        final Patient patient = new Patient();
-        patient.getName().add(new HumanName().setFamily(name));
-        patient.setId(createId(counter, 1L));
-        counter++;
-        return patient;
-    }
 
 }
