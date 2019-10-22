@@ -1,10 +1,22 @@
 package com.clinic.management.app.flow;
 
+import java.time.Duration;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import io.zeebe.client.ZeebeClient;
+import io.zeebe.client.api.clients.JobClient;
+import io.zeebe.client.api.response.ActivatedJob;
+import io.zeebe.client.api.subscription.JobHandler;
+import io.zeebe.client.api.subscription.JobWorker;
 
 
 @Component
-public class PatientAdapter {/* // implements JobHandler {
+public class PatientAdapter{  /*implements JobHandler {
   
   @Autowired
   private ZeebeClient zeebe;
@@ -14,7 +26,7 @@ public class PatientAdapter {/* // implements JobHandler {
   @PostConstruct
   public void subscribe() {
     subscription = zeebe.newWorker()
-      .jobType("ship-goods-z")
+      .jobType("patient-details-zeebe")
       .handler(this)
       .timeout(Duration.ofMinutes(1))
       .open();      
@@ -22,7 +34,7 @@ public class PatientAdapter {/* // implements JobHandler {
 
   @Override
   public void handle(JobClient client, ActivatedJob job) {
-    System.out.println("ship goods");
+    System.out.println("Patient Details Collected");
     client.newCompleteCommand(job.getKey()).send().join();
   }
 

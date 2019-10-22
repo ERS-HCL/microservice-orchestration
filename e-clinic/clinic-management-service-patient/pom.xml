@@ -65,11 +65,11 @@
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 	</dependency>
      
-    <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jersey2-jaxrs</artifactId>
-             <version>1.5.24</version>
-       </dependency>
+   
+	<dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+    </dependency>
 
 	</dependencies>
 	<build>

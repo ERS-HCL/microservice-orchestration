@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.clinic.management.repo.PatientRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.jaxrs.server.AbstractJaxRsResourceProvider;
@@ -20,12 +22,15 @@ import ca.uhn.fhir.rest.annotation.ResourceParam;
 import ca.uhn.fhir.rest.annotation.Search;
 import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
-
+import io.zeebe.client.ZeebeClient;
 @Component
 public class PatientResourceProvider extends AbstractJaxRsResourceProvider<Patient> {
 
     @Autowired
 	private PatientRepository patientRepository;
+    
+	@Autowired
+	  private ZeebeClient zeebe;
   
     public PatientResourceProvider(FhirContext fhirContext) {
         super(fhirContext);
@@ -46,6 +51,39 @@ public class PatientResourceProvider extends AbstractJaxRsResourceProvider<Patie
         patient.setId(IdDt.newRandomUuid().toString());
         patient.setIdBase(IdDt.newRandomUuid().toString());
         patientRepository.save(patient);
+        
+        
+		com.clinic.management.app.flow.Encounter e= new com.clinic.management.app.flow.Encounter();
+		com.clinic.management.app.flow.Patient pat= new com.clinic.management.app.flow.Patient();
+		e.setEncounterId(patient.getId());
+		pat.setName(patient.getNameFirstRep().getFamily());
+		pat.setAddress(patient.getAddress().get(0).getLine().toString()+","+patient.getAddress().get(0).getCity()+","+patient.getAddress().get(0).getCountry());
+		e.setPatient(pat);
+		String json=null;
+		ObjectMapper mapper = new ObjectMapper();
+		  try {
+			 json = mapper.writeValueAsString(e);
+			//System.out.println("ResultingJSONstring = " + json);
+		} catch (JsonProcessingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		
+		 try {           
+		      // start a workflow instance / should be basically just send
+		      // a message to broker - which will correlate it himself
+		      // this is not yet in the current version of zeebe - so we 
+		      // have to specify the workflow to start
+		      zeebe.newCreateInstanceCommand() //
+		        .bpmnProcessId("bp-process-clinic") //
+		        .latestVersion() //
+		        .variables(json) //
+		        .send().join();
+		    } catch (Exception ex) {
+		      throw new RuntimeException("Could not tranform and send message due to: "+ ex.getMessage(), ex);
+		    }
+        
         return new MethodOutcome(patient.getIdElement());
     }
 

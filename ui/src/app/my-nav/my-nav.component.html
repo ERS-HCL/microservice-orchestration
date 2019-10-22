@@ -1,0 +1,29 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 class="example-app-name">HCL Zeebe © </h1>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container"
+                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav class="side-nav" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-nav-list *ngFor="let nav of fillerNav">
+        <a mat-list-item [routerLink]="nav.route"  >
+            <button mat-icon-button><mat-icon>{{nav.icon}}</mat-icon></button>
+            {{nav.name}}
+         </a>
+         <div  *ngFor="let subnav of nav.subMenu">
+         <div  class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="(isExpanded || isShowing) && (nav.subMenu && nav.subMenu.length)">
+          <a mat-list-item [routerLink]="subnav.route" >{{subnav.name}}</a>
+        </div>
+      </div>
+         </mat-nav-list>
+
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
