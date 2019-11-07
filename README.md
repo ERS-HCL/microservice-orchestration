@@ -14,10 +14,72 @@ This Application is a sample implementation of zeebe which demonstrates a simple
 	6.	If the value is abnormal, it is directed to Doctor.
 	7.	Doctor check his previous record and suggest medication 
 	8.	Doctor’s prescription is sent to both care taker and Patient.
+	
+ Workflow process
+
+![alt text][wf]
+
+[wf]: document/BP-process-clinic.png "Workflow"
 
 ### Architecture :
+![alt text][arch]
+
+[arch]: document/WF_POC.png "Architecture"
 
 ### Demo : 
+![alt text][demo]
+
+[demo]: document/zeebe.gif "DEMO"
 
 ### Setup : 
+
+To run the application following application should be started and running without error.
+(https://docs.zeebe.io/java-client/get-started.html)
+1. Zeebe broker configured  with elastic search
+2. Elastic search 
+3. Operate server
+4. Mongo server
+
+Once above server are started, start the two microservice applications and angular for UI.
+To avoid CORS put the applications behind nginx and use it as reverse proxy
+
+```javascript
+server {
+		    listen       1200;
+			
+			location /{
+				  proxy_pass http://localhost:4200;
+				  proxy_set_header X-Real-IP $remote_addr;
+				  proxy_set_header Host $host:$server_port;
+				  proxy_connect_timeout 15s;
+				}
+				
+			 location /sockjs-node/ {
+					proxy_http_version 1.1;
+					proxy_set_header Upgrade $http_upgrade;
+					proxy_set_header Connection "upgrade";
+					rewrite ^/(.*)$  /$1  break;
+					proxy_set_header Host localhost;
+					proxy_pass http://localhost:4200/;
+				}
+			location /fhir/ {
+				  proxy_pass http://localhost:8091;
+				  proxy_set_header X-Real-IP $remote_addr;
+				  proxy_set_header Host $host:$server_port;
+				  proxy_connect_timeout 15s;
+				}
+			location /measurement/ {
+				  proxy_pass http://localhost:8091;
+				  proxy_set_header X-Real-IP $remote_addr;
+				  proxy_set_header Host $host:$server_port;
+				  proxy_connect_timeout 15s;
+				}
+	}
+```
+
+	
+
+
+
+
 
