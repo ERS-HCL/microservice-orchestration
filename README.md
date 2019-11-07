@@ -11,9 +11,8 @@ This Application is a sample implementation of zeebe which demonstrates a simple
 	3.	BP devices is a connected and  pushes BP data
 	4.	The care taker submits the information
 	5.	If the BP value is normal, he can walk out.
-	6.	If the value is abnormal, it is directed to Doctor.
-	7.	Doctor check his previous record and suggest medication 
-	8.	Doctor’s prescription is sent to both care taker and Patient.
+	6.	If the value is abnormal, an appointment is booked.
+	7.	And a payment claim is initiated with insurance.
 	
  Workflow process
 
