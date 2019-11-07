@@ -16,7 +16,7 @@ import io.zeebe.client.api.subscription.JobWorker;
 
 
 @Component
-public class PatientAdapter{  /*implements JobHandler {
+public class PayementAdapter implements JobHandler {
   
   @Autowired
   private ZeebeClient zeebe;
@@ -26,7 +26,7 @@ public class PatientAdapter{  /*implements JobHandler {
   @PostConstruct
   public void subscribe() {
     subscription = zeebe.newWorker()
-      .jobType("patient-details-zeebe")
+      .jobType("payment-details-zeebe")
       .handler(this)
       .timeout(Duration.ofMinutes(1))
       .open();      
@@ -34,7 +34,7 @@ public class PatientAdapter{  /*implements JobHandler {
 
   @Override
   public void handle(JobClient client, ActivatedJob job) {
-    System.out.println("Patient Details Collected");
+    System.out.println("Payement Details Collected");
     client.newCompleteCommand(job.getKey()).send().join();
   }
 
@@ -42,4 +42,4 @@ public class PatientAdapter{  /*implements JobHandler {
   public void closeSubscription() {
     subscription.close();      
   }
-*/}
+}

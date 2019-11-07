@@ -13,7 +13,7 @@
 	</properties>
 
 	<modules>
-		<module>clinic-management-service-condition</module>
+<!-- 		<module>clinic-management-service-condition</module>
 		<module>clinic-management-service-diagnosticreport</module>
 		<module>clinic-management-service-encounter</module>
 		<module>clinic-management-service-immunization</module>
@@ -21,8 +21,11 @@
 		<module>clinic-management-service-medicationrequest</module>
 		<module>clinic-management-service-observation</module>
 		<module>clinic-management-service-organization</module>
+		<module>clinic-management-service-procedure</module> -->
 		<module>clinic-management-service-patient</module>
-		<module>clinic-management-service-procedure</module>
+		<module>clinic-management-service-appointemnt</module>
+		
+		
 	</modules>
 
 	<build>

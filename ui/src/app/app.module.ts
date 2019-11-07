@@ -12,13 +12,18 @@ import { SecondPageComponent } from './second-page/second-page.component';
 import { ThirdPageComponent } from './third-page/third-page.component';
 import { FourthPageComponent } from './fourth-page/fourth-page.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CheckInComponent } from './check-in/check-in.component';
+import { MesurementComponent } from './mesurement/mesurement.component';
 
 
 const appRoutes: Routes = [
   { path: 'first-page', component: FirstPageComponent},
   { path: 'second-page', component: SecondPageComponent},
   { path: 'third-page', component: ThirdPageComponent},
-  { path: 'fourth-page', component: FourthPageComponent}
+  { path: 'fourth-page', component: FourthPageComponent},
+  { path: 'check-in', component: CheckInComponent},
+  { path: 'mesurement', component: MesurementComponent}
+
 
 ];
 
@@ -29,7 +34,9 @@ const appRoutes: Routes = [
     FirstPageComponent,
     SecondPageComponent,
     ThirdPageComponent,
-    FourthPageComponent
+    FourthPageComponent,
+    CheckInComponent,
+    MesurementComponent
       ],
   imports: [
     BrowserModule,

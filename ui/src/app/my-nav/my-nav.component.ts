@@ -25,7 +25,7 @@ export class MyNavComponent implements OnDestroy {
 
   fillerNav = [
     {name: "Patient",  icon: "account_box",subMenu:[{name:'Create', route: "second-page"},{name:'Fetch', route: "third-page"}]},
-    {name: "Blood Pressure", icon: "devices",subMenu:[{name:'Create', route: "second-page"},{name:'Fetch', route: "third-page"}]},
+    {name: "Blood Pressure", icon: "devices",subMenu:[{name:'Check-in', route: "check-in"},{name:'Measurement', route: "mesurement"}]},
     {name: "Schedule",  icon: "schedule",subMenu:[{name:'Create', route: "second-page"},{name:'Fetch', route: "third-page"}]},
     {name: "Payment",  icon: "payment",subMenu:[{name:'Create', route: "second-page"},{name:'Fetch', route: "third-page"}]}
 

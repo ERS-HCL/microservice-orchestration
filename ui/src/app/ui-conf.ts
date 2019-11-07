@@ -9,9 +9,10 @@ export const uiConfig = {
             "module": "fhir/Patient",
 		    "port": "200"
         },
-        "adm": {
-            "module": "admin-api",
-		    "port": "80"
+        "bp": {
+            "module1": "measurement/check-in",
+            "module2": "measurement/bp-data",
+		    "port": "200"
         }
     }
 }

@@ -3,10 +3,7 @@ import { HttpService } from '../http.service';
 import { uiConfig } from '../ui-conf';
 import { patientdata } from '../mock-data';
 import { MatSnackBar } from "@angular/material";
-
-
-
-import { HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpParams, HttpHeaders } from '@angular/common/http';screenX
 
 @Component({
   selector: 'app-second-page',

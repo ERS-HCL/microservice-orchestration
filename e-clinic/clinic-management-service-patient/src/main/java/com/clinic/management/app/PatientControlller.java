@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinic.management.app.flow.Mesurement;
+
 import io.zeebe.client.ZeebeClient;
 
 @RestController
@@ -18,7 +20,7 @@ public class PatientControlller {
 	@Autowired
 	private ZeebeClient zeebe;
 
-	@PostMapping("/check-in")
+	@PostMapping("/measurement/check-in")
 	public String checkin(@RequestBody String uuid) {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -32,11 +34,12 @@ public class PatientControlller {
 
 	}
 	
-	@PostMapping("/bp-data")
-	public String bpdata(@RequestBody String uuid) {
+	@PostMapping("/measurement/bp-data")
+	public String bpdata(@RequestBody Mesurement mesurement) {
+		
 
-		zeebe.newPublishMessageCommand().messageName("Message_BP_Info").correlationKey(uuid)
-				.timeToLive(Duration.ofMinutes(30)).variables("{\"bpValue\":100}").send().join();
+		zeebe.newPublishMessageCommand().messageName("Message_BP_Info").correlationKey(mesurement.getPatientId())
+				.timeToLive(Duration.ofMinutes(30)).variables("{\"bpValue\":"+mesurement.getBpValue()+"}").send().join();
 
 		return "Completed";
 
